@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  p please login in to enter admin portal
+  form()
+    label(for='email') Email
+    input(type='email' name='email')
+
+    label(for='password') Password
+    input(type='password' name='password')
+
+    input(type='submit' value='confirm')
