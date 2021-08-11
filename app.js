@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 if (process.env.NODE_MODE !== 'production') {
   dotenv.config();
 }
-
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -14,6 +13,14 @@ var usersRouter = require('./routes/users');
 const blogRouter = require('./routes/blogRoute');
 const adminRouter = require('./routes/adminRoute');
 const loginRouter = require('./routes/loginRoute');
+
+//Set up mongoose connection
+var mongoose = require('mongoose');
+var mongoDB = process.env.MONGO_URI;
+mongoose.connect(mongoDB, { useNewUrlParser: true , useUnifiedTopology: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 
 var app = express();
 
@@ -27,6 +34,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/blog', blogRouter);
