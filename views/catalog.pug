@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  ul
+    each blog in blogs
+      li
+        a(href=`blog/${blog._id}`)
+          div
+            h3= blog.title
+            p= blog.createdAt
+            if (blog.published === false)
+              p not yet published
+            else
+              p published

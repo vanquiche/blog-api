@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='https://cdn.tiny.cloud/1/oyr9pw36qmmdnvh42qsnx4zbj6bjygcl9ipcwjbe19wnchak/tinymce/5/tinymce.min.js' referrerpolicy='origin')
+    script.
+      tinymce.init({
+        selector: '#blogBody',
+        height: 800,
+        plugins: [
+          'emoticons image paste link media table imagetools codesample save'],
+        browser_spellcheck: true,
+      })
+
+  body
+    div.form-container
+      form(action='' method='POST')
+        label(for='title' class='blogLabel') Title
+        input(type='text' class='blogTitleInput' name='title' placeholder='give me a title...')
+        label(for='body' class='blogLabel') Body
+        textarea(id='blogBody' class='blogBodyText' name='body')
+        input(type='submit' value='save')
