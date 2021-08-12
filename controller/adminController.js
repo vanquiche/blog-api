@@ -1,7 +1,7 @@
 const Blog = require('../models/blogModel');
 
 exports.index = (req, res) => {
-  res.render('admin', { title: 'Admin Portal' });
+  res.render('admin', { title: 'Portal' });
 };
 
 exports.get_new_blog = (req, res) => {
