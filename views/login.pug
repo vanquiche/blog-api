@@ -2,13 +2,15 @@ extends layout
 
 block content
   h1= title
-
   p please login in to enter admin portal
-  form()
+
+  if error != undefined
+     p= error
+  form(action='' method='POST')
     label(for='email') Email
-    input(type='email' name='email')
+    input(type='email' name='email' autocomplete='off' required)
 
     label(for='password') Password
-    input(type='password' name='password')
+    input(type='password' name='password' required)
 
-    input(type='submit' value='confirm')
+    input(type='submit' value='login')
