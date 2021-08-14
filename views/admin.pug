@@ -2,13 +2,13 @@ extends layout
 
 block content
   h1= title
-  p welcome back user
-  ul
-    li
-      a(href='/admin/new-blog') create a new post
-    li
-      a(href='/admin/blog') show all post
-    li
-      a(href='/admin/profile') profile
+  p welcome back #{user.user.name}
+  div(class='card p-2')
+    p(class='card-text m-1')
+      a(href='/admin/new-blog') create new post
+    p(class='card-text m-1')
+      a(href='/admin/blog') view posts
+    p(class='card-text m-1')
+      a(href='/admin/profile') user profile
 
 

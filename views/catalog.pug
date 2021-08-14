@@ -1,15 +1,23 @@
 extends layout
 
 block content
-  h1= title
+  h1(class='display-6 ms-3')= title
+  a(href='/admin' class='link-primary ms-3') back
+
+  a(href='/admin/new-blog' class='link-primary ms-3') New Post
+  hr
   ul
     each blog in blogs
-      li
-        a(href=`blog/${blog._id}`)
-          div
-            h3= blog.title
-            p= blog.createdAt
-            if (blog.published === false)
-              p not yet published
-            else
-              p published
+      li(class='card p-0 ms-3 m-2' style='width: 24rem')
+        div(class='card-body')
+          img(src='https://via.placeholder.com/110?text=+' class='img-fluid rounded me-2' style='float:left;')
+          p.card-title title: #{blog.title}
+          p.card-title created: #{blog.createdAt}
+          if (blog.published === false)
+            p.card-title status: not yet published
+          else
+            p.card-title status: published
+          a(href=`blog/${blog._id}` class='card-link') Preview
+          a(href=`blog/edit/${blog._id}` class='card-link') Edit
+          a(href='' class='card-link') Publish
+
