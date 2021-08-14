@@ -9,7 +9,9 @@ router.get('/new-blog', adminController.get_new_blog);
 router.post('/new-blog', adminController.post_new_blog);
 
 router.get('/blog', adminController.show_blogs);
-router.get('/blog/:id', adminController.get_blog)
+router.get('/blog/:id', adminController.get_blog);
+router.get('/blog/edit/:id', adminController.edit_blog);
+router.post('/blog/edit/:id', adminController.edit_blog_post);
 
 router.get('/profile', adminController.profile);
 
