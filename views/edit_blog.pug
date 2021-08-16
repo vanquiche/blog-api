@@ -1,19 +1,21 @@
 extends layout
 
 block content
-  a(href='/admin' class='link-primary ms-3') back
+  h5= title
+  a(href='/admin' class='link-primary') back
   hr
   div.form-container
-    form(action='' method='POST')
+    form(action='?_method=PUT' method='POST')
       div(class='form-floating mb-1')
-        input(type='text' id='floatingInput' class='form-control' name='title' autocomplete='off' placeholder='Hello World' value=title)
+        input(type='text' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Hello World' value=title)
         label(for='floatingInput' class='blogLabel') Blog Post Title
 
       textarea(id='blogBody' class='blogBodyText' name='body')= blog.body
 
       div(class='form-switch ps-0 pt-1 pb-1')
         label(for='published-false' class='form-check-label') unpublish
-        input(type='checkbox' class='form-check-input ms-1 me-1 mt-0' id='flexSwitchCheckDefault' name='published' value='true')
+        input(type='checkbox' class='form-check-input ms-1 me-1 mt-0' id='flexSwitchCheckDefault' name='published' value='true' checked=blog.published === true ? true : false)
         label(for='published-true' class='form-check-label') publish
-      input(type='submit' class='btn btn-primary btn-sm me-1' value='Update')
-      a(href='/admin/blog' class='btn btn-secondary btn-sm') Cancel
+
+      input(type='submit' class='btn btn-primary shadow-none btn-sm me-1' value='Update')
+      a(href='/admin/blog' class='btn btn-secondary shadow-none btn-sm') Cancel

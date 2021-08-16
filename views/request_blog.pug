@@ -1,5 +1,8 @@
 extends layout
 
 block content
-  h1= blog.title
-  p!= blog.body
+  a(href='/admin/blog') back
+  hr
+  div(class='card p-3')
+    h5= blog.title
+    p!= blog.body

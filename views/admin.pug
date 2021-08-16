@@ -1,14 +1,16 @@
 extends layout
 
 block content
-  h1= title
-  p welcome back #{user.user.name}
+  h5= title
+  p Welcome back, #{user.user.name}!
   div(class='card p-2')
     p(class='card-text m-1')
-      a(href='/admin/new-blog') create new post
+      a(href='/admin/new-blog' class='card-link') new post
     p(class='card-text m-1')
-      a(href='/admin/blog') view posts
+      a(href='/admin/blog' class='card-link') view posts
     p(class='card-text m-1')
-      a(href='/admin/profile') user profile
+      a(href='#' target='_blank' class='card-link') whatTheJS
+    p(class='card-text m-1')
+      a(href='/admin/profile' class='card-link') user profile
 
 

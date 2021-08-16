@@ -1,16 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p please login in to enter admin portal
+  h5= title
+  p Please login in to enter the Admin Portal.
 
   if error != undefined
      p= error
-  form(action='' method='POST')
-    label(for='email') Email
-    input(type='email' name='email' autocomplete='off' required)
+  form(action='' method='POST' class='card p-4' style='width: 35rem')
+    div(class='form-floating mb-1')
+      input(type='email' class='form-control' id='floatingInput' name='email' autocomplete='off' placeholder='user@email.com' required)
+      label(for='email') Email
 
-    label(for='password') Password
-    input(type='password' name='password' required)
+    div(class='form-floating mb-1')
+      input(type='password' class='form-control' id='floatingInput' name='password' placeholder='secret' autocomplete='off' required)
+      label(for='password') Password
 
-    input(type='submit' value='login')
+    input(type='submit' class='btn btn-primary btn-sm mt-1' value='login')

@@ -1,18 +1,21 @@
 extends layout
 
 block content
-  a(href='/admin' class='link-primary ms-3') back
+  h5= title
+  a(href='/admin' class='link-primary me-3') back
   hr
   div.form-container
     form(action='' method='POST')
       div(class='form-floating mb-1')
-        input(type='text' id='floatingInput' class='form-control' name='title' autocomplete='off' placeholder='Hello World')
+        input(type='text' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Hello World')
         label(for='floatingInput' class='blogLabel') Blog Post Title
 
       textarea(id='blogBody' class='blogBodyText' name='body')
+      
       div(class='form-switch ps-0 pt-1 pb-1')
         label(for='published-false' class='form-check-label') unpublish
         input(type='checkbox' class='form-check-input ms-1 me-1 mt-0' id='flexSwitchCheckDefault' name='published' value='true')
         label(for='published-true' class='form-check-label') publish
+
       input(type='submit' class='btn btn-primary btn-sm me-1' value='Save')
       a(href='/admin' class='btn btn-secondary btn-sm') Cancel

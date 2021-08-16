@@ -1,23 +1,25 @@
 extends layout
 
 block content
-  h1(class='display-6 ms-3')= title
-  a(href='/admin' class='link-primary ms-3') back
-
-  a(href='/admin/new-blog' class='link-primary ms-3') New Post
+  h5= title
+  a(href='/admin' class='link-primary me-3') back
+  a(href='/admin/new-blog' class='link-primary') New Post
   hr
-  ul
-    each blog in blogs
-      li(class='card p-0 ms-3 m-2' style='width: 24rem')
+
+  each blog in blogs
+    form(action=`blog/delete/${blog._id}?_method=DELETE` method='POST')
+      div(class='card p-0 ms-3 m-2' style='width: 24rem')
         div(class='card-body')
           img(src='https://via.placeholder.com/110?text=+' class='img-fluid rounded me-2' style='float:left;')
           p.card-title title: #{blog.title}
           p.card-title created: #{blog.createdAt}
           if (blog.published === false)
-            p.card-title status: not yet published
+            p.card-title status: not published
           else
             p.card-title status: published
-          a(href=`blog/${blog._id}` class='card-link') Preview
-          a(href=`blog/edit/${blog._id}` class='card-link') Edit
-          a(href='' class='card-link') Publish
+          a(href=`blog/edit/${blog._id}` class='card-link') edit
+          input(type='submit' class='card-link link-danger remove-btn' value='delete')
+          //- a(href='' class='card-link' data-id=blog._id) Publish
+          p.card-text= blog.snippet
+            a(href=`blog/${blog._id}` class='card-link') #{' '}read
 
