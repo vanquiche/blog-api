@@ -2,15 +2,16 @@ const dotenv = require('dotenv');
 if (process.env.NODE_MODE !== 'production') {
   dotenv.config();
 }
-const jwt = require('jsonwebtoken');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
+const jwt = require('jsonwebtoken');
+const methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-const blogRouter = require('./routes/blogRoute');
+const apiRouter = require('./routes/apiRoute');
 const adminRouter = require('./routes/adminRoute');
 const loginRouter = require('./routes/loginRoute');
 
@@ -36,13 +37,17 @@ const authenticateToken = (req, res, next) => {
     return next();
   });
 };
-// assign locals.user if current user exist
-const showUser = (req, res, next) => {
-  if (res.locals.user) {
-    res.redirect('/admin');
-  } else {
-    return next();
-  }
+
+const userIsLoggedIn = (req, res, next) => {
+  const token = req.cookies.token;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/admin');
+    });
+  } else return next();
 };
 
 var app = express();
@@ -55,12 +60,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 // routes
 app.use('/', indexRouter);
-app.use('/blog', blogRouter);
+app.use('/api', apiRouter);
 app.use('/admin', authenticateToken, adminRouter);
-app.use('/login', loginRouter);
+app.use('/login', userIsLoggedIn, loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
