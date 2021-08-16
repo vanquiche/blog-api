@@ -10,9 +10,11 @@ router.post('/new-blog', adminController.post_new_blog);
 
 router.get('/blog', adminController.show_blogs);
 router.get('/blog/:id', adminController.get_blog);
-router.get('/blog/edit/:id', adminController.edit_blog);
-router.post('/blog/edit/:id', adminController.edit_blog_post);
 
-router.get('/profile', adminController.profile);
+router.get('/blog/edit/:id', adminController.edit_blog);
+router.put('/blog/edit/:id', adminController.edit_blog_post);
+router.delete('/blog/delete/:id', adminController.delete_blog_post);
+
+router.get('/profile', adminController.get_profile);
 
 module.exports = router;
