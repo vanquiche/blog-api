@@ -28,15 +28,16 @@ exports.login_submit_post = [
         }
         if (user !== null) {
           // create web token here
+          // expires in 24hrs
+          const expireTime = 86400000;
           const token = jwt.sign(
             { user },
             process.env.JWT_SECRET,
             {
               algorithm: 'HS256',
-            },
-            { expiresIn: '1d' }
+            }
           );
-          res.cookie('token', token);
+          res.cookie('token', token, {maxAge: expireTime});
           res.redirect('/admin');
         } else {
           res.render('login', {
