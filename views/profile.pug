@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  div(class='card')
+    div.card-header
+      ul(class='nav nav-tabs card-header-tabs' id='myTab' role='tablist')
+        li(class='nav-item' role='presentation')
+          button(class='nav-link active' id='user-tab' data-bs-toggle='tab' data-bs-target='#user' type='button' role='tab' aria-controls='user' aria-selected='true') User
+
+        li(class='nav-item' role='presentation')
+          button(class='nav-link' id='update-tab' data-bs-toggle='tab' data-bs-target='#update' type='button' role='tab' aria-controls='update' aria-selected='false') Update
+
+        li(class='nav-item' role='presentation')
+          button(class='nav-link' id='addUser-tab' data-bs-toggle='tab' data-bs-target='#addUser' type='button' role='tab' aria-controls='addUser' aria-selected='false') Add User
+
+    div(class='tab-content card-body' id='myTabContent')
+      div(id='user' class='tab-pane fade show active' role='tabpanel' aria-labelledby='user-tab')
+        p(class='card-text m-2') name: #{user.name}, #{user.lastname}
+        p(class='card-text m-2') email: #{user.email}
+        p(class='card-text m-2') username: #{user.username}
+        p(class='card-text m-2') role: #{user.role}
+
+      div(id='update' class='tab-pane fade' role='tabpanel' aria-labelledby='update-tab' style='width: 35rem')
+        h5 Change User credentials
+        form(action='?_method=PUT' method='POST')
+          div(class='form-floating mb-1')
+            input(type='text' class='form-control' id='floatingInput' name='username' autocomplete='off' placeholder='username' required)
+            label(for='username') Username
+          div(class='form-floating mb-1')
+            input(type='email' class='form-control' id='floatingInput' name='email' autocomplete='off' placeholder='email' required)
+            label(for='email') Email
+          //- add a 'confirm password'
+          div(class='form-floating mb-1')
+            input(type='password' class='form-control' id='floatingInput' name='password' placeholder='password' required)
+            label(for='password') Password
+          //- submit and reset buttons
+          input(type='submit' class='btn btn-primary btn-sm mt-1 me-1' value='Update')
+          input(type='reset' class='btn btn-secondary btn-sm mt-1 me-1' value='Cancel')
+
+      div(id='addUser' class='tab-pane fade' role='tabpanel' aria-labelledby='add-tab' style='width: 35rem')
+        if user.role === 'super admin'
+          h5 create new User
+          form(action='' method='POST')
+            div(class='form-floating mb-1')
+              input(type='text' name='name' class='form-control' id='floatingInput' autocomplete='off' placeholder='first name' required)
+              label(for='name') First Name
+            div(class='form-floating mb-1')
+              input(type='text' name='lastname' class='form-control' id='floatingInput' autocomplete='off' placeholder='last name' required)
+              label(for='lastname') Last Name
+            div(class='form-floating mb-1')
+              input(type='text' name='username' class='form-control' id='floatingInput' autocomplete='off' placeholder='username' required)
+              label(for='username') Username
+            div(class='form-floating mb-1')
+              input(type='email' name='email' class='form-control' id='floatingInput' autocomplete='off' placeholder='email' required)
+              label(for='email') Email
+            div(class='form-floating mb-1')
+              input(type='password' name='password' class='form-control' id='floatingInput' autocomplete='off' placeholder='password' required)
+              label(for='password') Password
+            //- submit and reset buttons
+            input(type='submit' class='btn btn-primary btn-sm mt-1 me-1' value='Create')
+            input(type='reset' class='btn btn-secondary btn-sm mt-1 me-1' value='Cancel')
+
+        else
+          p not allowed
+
+
+
