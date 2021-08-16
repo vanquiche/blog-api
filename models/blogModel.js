@@ -5,6 +5,7 @@ const blog = new Schema({
   title: { type: String, required: true },
   body: { type: String, required: true },
   comments: { type: Array },
+  snippet: { type: String },
   createdAt: { type: Date, default: Date.now, required: true },
   published: { type: Boolean, default: false },
 });
