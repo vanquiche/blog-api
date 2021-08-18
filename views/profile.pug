@@ -24,14 +24,14 @@ block content
         h5 Change User credentials
         form(action='?_method=PUT' method='POST')
           div(class='form-floating mb-1')
-            input(type='text' class='form-control' id='floatingInput' name='username' autocomplete='off' placeholder='username' required)
+            input(type='text' class='form-control' id='floatingInput' name='username' autocomplete='off' placeholder='username' minLength='1' maxLength='20' value=user.username)
             label(for='username') Username
           div(class='form-floating mb-1')
-            input(type='email' class='form-control' id='floatingInput' name='email' autocomplete='off' placeholder='email' required)
+            input(type='email' class='form-control' id='floatingInput' name='email' autocomplete='off' placeholder='email' value=user.email)
             label(for='email') Email
           //- add a 'confirm password'
           div(class='form-floating mb-1')
-            input(type='password' class='form-control' id='floatingInput' name='password' placeholder='password' required)
+            input(type='password' class='form-control' id='floatingInput' name='password' placeholder='password' minLength='4' maxLength='20' value=user.password)
             label(for='password') Password
           //- submit and reset buttons
           input(type='submit' class='btn btn-primary btn-sm mt-1 me-1' value='Update')
@@ -39,7 +39,7 @@ block content
 
       div(id='addUser' class='tab-pane fade' role='tabpanel' aria-labelledby='add-tab' style='width: 35rem')
         if user.role === 'super admin'
-          h5 create new User
+          h5 Create new user
           form(action='' method='POST')
             div(class='form-floating mb-1')
               input(type='text' name='name' class='form-control' id='floatingInput' autocomplete='off' placeholder='first name' required)
