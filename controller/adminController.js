@@ -1,4 +1,6 @@
 const Blog = require('../models/blogModel');
+const User = require('../models/adminModel');
+const { body, validationResult } = require('express-validator');
 
 function createSnippet(str) {
   if (str === null || str === '') {
@@ -11,16 +13,80 @@ function createSnippet(str) {
   return snippet;
 }
 
+// admin inde controller
 exports.index = (req, res) => {
   res.render('admin', { title: 'Admin', user: req.user });
 };
 
+// profile controller
 exports.get_profile = (req, res, next) => {
-  console.log(req.user);
+  res.render('profile', { title: 'Profile', user: req.user });
+};
 
-  res.render('profile', {title: 'Profile', user: req.user.user})
-}
+exports.update_profile = [
+  // sanitizing input fields
+  body('username', 'invalid username').trim().escape(),
+  body('email', 'invalid email').isEmail().trim().escape(),
+  body('password', 'invalid password').trim().escape(),
+  // console.log(req.user.user._id),
+  // res.send('hello world')
+  (req, res, next) => {
+    User.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        username: req.body.username || req.user.username,
+        email: req.body.email || req.user.email,
+        password: req.body.password || req.user.password,
+      },
+      { new: true }
+    ).exec((err, result) => {
+      if (err) {
+        return next(err);
+      }
+      req.user = result;
+      res.render('profile', { title: 'Profile', user: req.user });
+    });
+  },
+];
 
+exports.add_user = [
+  body('name', 'invalid first-name')
+    .trim()
+    .isLength({ min: 1, max: 25 })
+    .escape(),
+  body('lastname', 'invalid last name')
+    .trim()
+    .isLength({ min: 1, max: 25 })
+    .escape(),
+  body('username', 'invalid username')
+    .trim()
+    .isLength({ min: 1, max: 25 })
+    .escape(),
+  body('password', 'invalid password')
+    .trim()
+    .isLength({ min: 4, max: 20 })
+    .escape(),
+  body('email', 'invalid email').trim().escape().isEmail(),
+
+  (req, res, next) => {
+    const newUser = {
+      name: req.body.name,
+      lastname: req.body.lastname,
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      role: 'admin',
+    };
+    User.save(newUser, (err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('admin/profile');
+    });
+  },
+];
+
+// blog controller
 exports.get_new_blog = (req, res) => {
   res.render('new_blog', { title: 'New Blog Post' });
 };
@@ -98,8 +164,4 @@ exports.delete_blog_post = (req, res, next) => {
     }
     res.redirect('/admin/blog');
   });
-};
-
-exports.profile = (req, res) => {
-  res.send('profile page not yet implemented');
 };
