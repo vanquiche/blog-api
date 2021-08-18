@@ -16,5 +16,7 @@ router.put('/blog/edit/:id', adminController.edit_blog_post);
 router.delete('/blog/delete/:id', adminController.delete_blog_post);
 
 router.get('/profile', adminController.get_profile);
+router.put('/profile', adminController.update_profile);
+router.post('/profile', adminController.add_user);
 
 module.exports = router;
