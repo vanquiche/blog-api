@@ -1,5 +1,5 @@
 doctype html
-html
+html(lang='en')
   head
     title Portal | #{title}
     link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We' crossorigin='anonymous')
@@ -13,9 +13,9 @@ html
         selector: '#blogBody',
         height: 550,
         plugins: [
-          'emoticons image paste link media table imagetools codesample save'],
+          'emoticons image paste link media table imagetools codesample save wordcount'],
         browser_spellcheck: true,
-        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | save'
+        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | wordcount'
       })
 
   body
