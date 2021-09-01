@@ -7,6 +7,8 @@ const blog = new Schema({
   comments: { type: Array },
   snippet: { type: String },
   createdAt: { type: Date, default: Date.now, required: true },
+  featured: { type: Boolean, default: false },
+  tags: [{ type: String }],
   published: { type: Boolean, default: false },
 });
 
