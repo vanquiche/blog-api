@@ -96,6 +96,7 @@ exports.post_new_blog = (req, res, next) => {
     title: req.body.title,
     body: req.body.body,
     snippet: createSnippet(req.body.body),
+    tags: req.body.tags,
     published: publishState,
   });
   blog.save((err) => {

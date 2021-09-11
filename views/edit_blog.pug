@@ -12,6 +12,10 @@ block content
 
       textarea(id='blogBody' class='blogBodyText' name='body')= blog.body
 
+      div(class='form-floating mb-1 mt-2')
+        input(type='tags' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Tags')
+        label(for='floatingInput' class='blogLabel') tags (separate with single space)
+
       div(class='form-switch ps-0 pt-1 pb-1')
         label(for='published-false' class='form-check-label') unpublish
         input(type='checkbox' class='form-check-input ms-1 me-1 mt-0' id='flexSwitchCheckDefault' name='published' value='true' checked=blog.published === true ? true : false)
