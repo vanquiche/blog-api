@@ -32,13 +32,13 @@ exports.login_submit_post = [
           const userLogged = {
             name: `${user.name} ${user.lastname}`,
             username: user.username,
-            email: user.email
-          }
+            email: user.email,
+          };
           const oneDay = 1000 * 60 * 60 * 24;
           const token = jwt.sign({ userLogged }, process.env.JWT_SECRET, {
             algorithm: 'HS256',
           });
-          res.cookie('token', token, { maxAge: oneDay });
+          res.cookie('token', token, { maxAge: oneDay, httpOnly: true });
           res.redirect('/admin');
         } else {
           res.render('login', {
