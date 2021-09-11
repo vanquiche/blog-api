@@ -29,8 +29,13 @@ exports.login_submit_post = [
         if (user !== null) {
           // create web token here
           // expires in 24hrs
+          const userLogged = {
+            name: `${user.name} ${user.lastname}`,
+            username: user.username,
+            email: user.email
+          }
           const oneDay = 1000 * 60 * 60 * 24;
-          const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+          const token = jwt.sign({ userLogged }, process.env.JWT_SECRET, {
             algorithm: 'HS256',
           });
           res.cookie('token', token, { maxAge: oneDay });
