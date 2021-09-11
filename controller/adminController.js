@@ -15,7 +15,7 @@ function createSnippet(str) {
 
 // admin inde controller
 exports.index = (req, res) => {
-  res.render('admin', { title: 'Admin', user: req.user });
+  res.render('admin', { title: 'Admin', user: req.user.userLogged });
 };
 
 // profile controller

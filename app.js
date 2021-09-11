@@ -35,7 +35,8 @@ const authenticateToken = (req, res, next) => {
     if (err) {
       res.status(403).redirect('/login');
     }
-    req.user = user.user;
+    console.log(user)
+    req.user = user;
     return next();
   });
 };
