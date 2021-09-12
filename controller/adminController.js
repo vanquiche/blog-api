@@ -159,7 +159,7 @@ exports.post_new_blog = [
       title: req.body.title,
       body: req.body.body,
       snippet: createSnippet(req.body.body),
-      thumbnail: req.file.path,
+      thumbnail: `/images/thumbnails/${req.file.filename}`,
       thumbnailAlt: req.body.thumbnailAlt,
       slug: createSlug(req.body.title),
       tags: req.body.tags.split(' '),

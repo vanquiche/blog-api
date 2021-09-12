@@ -10,7 +10,7 @@ block content
     form(action=`blog/delete/${blog._id}?_method=DELETE` method='POST')
       div(class='card p-0 ms-3 m-2' style='width: 24rem')
         div(class='card-body')
-          img(src=blog.thumbnail alt=blog.thumbnailAlt class='img-fluid rounded me-2' style='float:left;')
+          img(src=blog.thumbnail alt=blog.thumbnailAlt class='img-fluid rounded me-2' style='float:left;height:150px;width:150px;object-fit:cover;')
           p.card-title title: #{blog.title}
           p.card-title created: #{blog.createdAt}
           if (blog.published === false)
