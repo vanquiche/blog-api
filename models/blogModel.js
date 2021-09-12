@@ -9,6 +9,9 @@ const blog = new Schema({
   createdAt: { type: Date, default: Date.now, required: true },
   featured: { type: Boolean, default: false },
   tags: [{ type: String }],
+  slug: { type: String, required: true },
+  thumbnail: { type: String },
+  thumbnailAlt: { type: String },
   published: { type: Boolean, default: false },
 });
 

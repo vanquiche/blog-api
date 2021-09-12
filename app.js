@@ -12,6 +12,7 @@ var logger = require('morgan');
 const compression = require('compression');
 const helmet = require('helmet');
 
+
 var indexRouter = require('./routes/index');
 const apiRouter = require('./routes/apiRoute');
 const adminRouter = require('./routes/adminRoute');
@@ -35,7 +36,7 @@ const authenticateToken = (req, res, next) => {
     if (err) {
       res.status(403).redirect('/login');
     }
-    console.log(user)
+    // console.log(user)
     req.user = user;
     return next();
   });
@@ -68,6 +69,7 @@ app.use(cookieParser());
 app.use(compression());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(methodOverride('_method'));
+
 
 // routes
 app.use('/', indexRouter);

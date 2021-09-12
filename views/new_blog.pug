@@ -5,17 +5,29 @@ block content
   a(href='/admin' class='link-primary me-3') back
   hr
   div.form-container
-    form(action='' method='POST')
+    form(action='' method='POST' enctype='multipart/form-data')
+      //- thumbnail
+      div(class='form-floating mb-1')
+        input(type='file' id='floatingInput' class='form-control' style='padding-top:45px' name='thumbnail' autocomplete='off' accept='.jpg, .jpeg, .png, .gif')
+        label(for='floatingInput' class='blogLabel') Add thumbnail
+      //- thumbnail alt
+      div(class='form-floating mb-1')
+        input(type='text' id='floatingInput' class='form-control' style='padding-top:45px' name='thumbnailAlt' autocomplete='off' placeholder='Hello World')
+        label(for='floatingInput' class='blogLabel') thumbnail alt-description
+
+      //- title
       div(class='form-floating mb-1')
         input(type='text' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Hello World')
         label(for='floatingInput' class='blogLabel') Blog Post Title
 
+      //- body
       textarea(id='blogBody' class='blogBodyText' name='body')
 
+      //- tags
       div(class='form-floating mb-1 mt-2')
-        input(type='tags' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Tags')
+        input(type='tags' id='floatingInput' class='form-control' style='padding-top:45px' name='tags' autocomplete='off' placeholder='Tags')
         label(for='floatingInput' class='blogLabel') tags (separate with single space)
-
+      //- publish toggle
       div(class='form-switch ps-0 pt-1 pb-1')
         label(for='published-false' class='form-check-label') unpublish
         input(type='checkbox' class='form-check-input ms-1 me-1 mt-0' id='flexSwitchCheckDefault' name='published' value='true')

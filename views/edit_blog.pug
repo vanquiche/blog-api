@@ -2,7 +2,7 @@ extends layout
 
 block content
   h5= title
-  a(href='/admin' class='link-primary') back
+  a(href='/admin/blog' class='link-primary') back
   hr
   div.form-container
     form(action='?_method=PUT' method='POST')
@@ -13,7 +13,7 @@ block content
       textarea(id='blogBody' class='blogBodyText' name='body')= blog.body
 
       div(class='form-floating mb-1 mt-2')
-        input(type='tags' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Tags')
+        input(type='tags' id='floatingInput' class='form-control' style='padding-top:45px' name='tags' autocomplete='off' placeholder='Tags' value=blog.tags.join(' '))
         label(for='floatingInput' class='blogLabel') tags (separate with single space)
 
       div(class='form-switch ps-0 pt-1 pb-1')
