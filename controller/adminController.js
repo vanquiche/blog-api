@@ -1,14 +1,26 @@
-const express = require('express');
-const Blog = require('../models/blogModel');
-const User = require('../models/adminModel');
-const { body, validationResult } = require('express-validator');
+const dotenv = require('dotenv');
+if (process.env.NODE_MODE !== 'production') {
+  dotenv.config();
+}
+var Blog = require('../models/blogModel');
+var User = require('../models/adminModel');
+var cloudinary = require('cloudinary').v2;
+var path = require('path');
+var multer = require('multer');
+var { body } = require('express-validator');
 
-const path = require('path');
-const multer = require('multer');
-const directory = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../public/images/thumbnails'));
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
+var directory = multer.diskStorage({
+  // we are no longer saving to disc
+  // destination: (req, file, cb) => {
+  //   cb(null, path.join(__dirname, '../public/images/thumbnails'));
+  // },
   filename: (req, file, cb) => {
     cb(null, file.originalname.toLowerCase().split(' ').join('-'));
   },
@@ -33,8 +45,6 @@ const upload = multer({
     }
   },
 });
-
-
 
 function createSnippet(str) {
   if (str === null || str === '') {
@@ -70,7 +80,6 @@ exports.update_profile = [
   body('email', 'invalid email').isEmail().trim().escape(),
   body('password', 'invalid password').trim().escape(),
   // console.log(req.user.user._id),
-  // res.send('hello world')
   (req, res, next) => {
     User.findOneAndUpdate(
       { _id: req.user._id },
@@ -131,50 +140,32 @@ exports.add_user = [
 exports.get_new_blog = (req, res) => {
   res.render('new_blog', { title: 'New Blog Post' });
 };
-// exports.post_new_blog = (req, res, next) => {
-//   const publishState = req.body.published === 'true' ? true : false;
-//   const blog = new Blog({
-//     title: req.body.title,
-//     body: req.body.body,
-//     snippet: createSnippet(req.body.body),
-//     thumbnail:
-//     thumnailAlt:
-//     slug: createSlug(req.body.title),
-//     tags: (req.body.tags).split(' '),
-//     published: publishState,
-//   });
-//   blog.save((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.redirect('/admin/blog');
-//   });
-// };
 
 exports.post_new_blog = [
   upload.single('thumbnail'),
-  (req, res) => {
+  async (req, res) => {
+    const extRegex = /\.jpg|\.png|\.jpeg|\.gif/gi;
+    const cloud = await cloudinary.uploader.upload(req.file.path, {
+      public_id: req.file.filename.replace(extRegex, ''),
+    });
     const publishState = req.body.published === 'true' ? true : false;
     const blog = new Blog({
       title: req.body.title,
       body: req.body.body,
-      snippet: createSnippet(req.body.body),
-      thumbnail: `/images/thumbnails/${req.file.filename}`,
-      thumbnailAlt: req.body.thumbnailAlt,
-      slug: createSlug(req.body.title),
-      tags: req.body.tags.split(' '),
       published: publishState,
+      thumbnail: cloud.secure_url,
+      tags: req.body.tags.split(' '),
+      thumbnailAlt: req.file.filename,
+      slug: createSlug(req.body.title),
+      snippet: createSnippet(req.body.body),
     });
     blog.save((err) => {
       if (err) {
         return next(err);
       }
-      console.log(req.file)
-      console.log(blog);
       res.redirect('/admin/blog');
     });
-
-  }
+  },
 ];
 
 exports.show_blogs = (req, res, next) => {
@@ -205,30 +196,39 @@ exports.edit_blog = (req, res, next) => {
     if (err) {
       return next(err);
     }
-    console.log(result)
     res.render('edit_blog', { title: result[0].title, blog: result[0] });
   });
 };
 
-exports.edit_blog_post = (req, res, next) => {
-  const publishState = req.body.published === 'true' ? true : false;
-  Blog.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      title: req.body.title,
-      body: req.body.body,
-      snippet: createSnippet(req.body.body),
-      tags: (req.body.tags).split(' '),
-      published: publishState,
-    },
-    { new: true }
-  ).exec((err, result) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/admin/blog');
-  });
-};
+exports.edit_blog_post = [
+  upload.single('thumbnail'),
+  async (req, res, next) => {
+    const extRegex = /\.jpg|\.png|\.jpeg|\.gif/gi;
+    console.log(req.file);
+    const cloud = await cloudinary.uploader.upload(req.file.path, {
+      public_id: req.file.filename.replace(extRegex, ''),
+    });
+    const publishState = req.body.published === 'true' ? true : false;
+    Blog.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        title: req.body.title,
+        body: req.body.body,
+        snippet: createSnippet(req.body.body),
+        thumbnail: cloud.secure_url,
+        thumbnailAlt: req.file.filename,
+        tags: req.body.tags.split(' '),
+        published: publishState,
+      },
+      { new: true }
+    ).exec((err, result) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect('/admin/blog');
+    });
+  },
+];
 
 exports.delete_blog_post = (req, res, next) => {
   Blog.deleteOne({ _id: req.params.id }, (err) => {

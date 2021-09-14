@@ -5,7 +5,13 @@ block content
   a(href='/admin/blog' class='link-primary') back
   hr
   div.form-container
-    form(action='?_method=PUT' method='POST')
+    img(src=blog.thumbnail alt=blog.thumbnailAlt class='img-thumbnail mb-2' style='width:100%;height:300px;object-fit:cover')
+    form(action='?_method=PUT' method='POST' enctype='multipart/form-data')
+      //- thumbnail
+      div(class='form-floating mb-1')
+        input(type='file' id='floatingInput' class='form-control' style='padding-top:45px' name='thumbnail' autocomplete='off' accept='.jpg, .jpeg, .png, .gif')
+        label(for='floatingInput' class='blogLabel') Add thumbnail
+
       div(class='form-floating mb-1')
         input(type='text' id='floatingInput' class='form-control' style='padding-top:45px' name='title' autocomplete='off' placeholder='Hello World' value=title)
         label(for='floatingInput' class='blogLabel') Blog Post Title

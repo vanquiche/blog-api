@@ -2,21 +2,20 @@ const dotenv = require('dotenv');
 if (process.env.NODE_MODE !== 'production') {
   dotenv.config();
 }
-var createError = require('http-errors');
 var express = require('express');
-var path = require('path');
-const jwt = require('jsonwebtoken');
-const methodOverride = require('method-override');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const compression = require('compression');
-const helmet = require('helmet');
-
+var compression = require('compression');
+var methodOverride = require('method-override');
+var createError = require('http-errors');
+var helmet = require('helmet');
+var jwt = require('jsonwebtoken');
+var path = require('path');
 
 var indexRouter = require('./routes/index');
-const apiRouter = require('./routes/apiRoute');
-const adminRouter = require('./routes/adminRoute');
-const loginRouter = require('./routes/loginRoute');
+var apiRouter = require('./routes/apiRoute');
+var adminRouter = require('./routes/adminRoute');
+var loginRouter = require('./routes/loginRoute');
 
 //Set up mongoose connection
 var mongoose = require('mongoose');
