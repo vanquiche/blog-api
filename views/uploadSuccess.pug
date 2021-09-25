@@ -1,0 +1,7 @@
+extends layout
+
+block content
+  h5 Uploaded Images
+  a(href='/admin/media' class='link-primary') back
+  each result in results
+    p= result

@@ -46,6 +46,26 @@ const upload = multer({
   },
 });
 
+const multi_upload = multer({
+  storage: directory,
+  limits: {
+    fileSize: maxSizeUpload,
+  },
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype == 'image/png' ||
+      file.mimetype == 'image/jpg' ||
+      file.mimetype == 'image/gif' ||
+      file.mimetype == 'image/jpeg'
+    ) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error('Only .png, .gif, .jpg and .jpeg format allowed'));
+    }
+  },
+});
+
 function createSnippet(str) {
   if (str === null || str === '') {
     return 'no snippet available';
@@ -144,9 +164,9 @@ exports.get_new_blog = (req, res) => {
 exports.post_new_blog = [
   upload.single('thumbnail'),
   async (req, res) => {
-    const extRegex = /\.jpg|\.png|\.jpeg|\.gif/gi;
+    // const extRegex = /\.jpg|\.png|\.jpeg|\.gif/gi;
     const cloud = await cloudinary.uploader.upload(req.file.path, {
-      public_id: req.file.filename.replace(extRegex, ''),
+      public_id: req.file.filename,
     });
     const publishState = req.body.published === 'true' ? true : false;
     const blog = new Blog({
@@ -203,10 +223,8 @@ exports.edit_blog = (req, res, next) => {
 exports.edit_blog_post = [
   upload.single('thumbnail'),
   async (req, res, next) => {
-    const extRegex = /\.jpg|\.png|\.jpeg|\.gif/gi;
-    console.log(req.file);
     const cloud = await cloudinary.uploader.upload(req.file.path, {
-      public_id: req.file.filename.replace(extRegex, ''),
+      public_id: req.file.filename,
     });
     const publishState = req.body.published === 'true' ? true : false;
     Blog.findOneAndUpdate(
@@ -238,3 +256,38 @@ exports.delete_blog_post = (req, res, next) => {
     res.redirect('/admin/blog');
   });
 };
+
+exports.get_media_library = (req, res) => {
+  res.render('media', { title: 'Media Upload' });
+};
+
+exports.post_media_library = [
+  // process uploaded images
+  multi_upload.array('media', 5),
+  async (req, res) => {
+    // assign a promise to each file
+    let res_promises = req.files.map(
+      (file) =>
+        new Promise((resolve, reject) => {
+          // upload file individually
+          cloudinary.uploader.upload(
+            file.path,
+            { public_id: file.filename },
+            (err, result) => {
+              // if upload fails, then reject
+              if (err) reject(err);
+              // otherwise resolve promise
+              else resolve(result.public_id);
+            }
+          );
+        })
+    );
+    // once all promises has been resolved
+    // send user to new page displaying results
+    Promise.all(res_promises)
+      .then((result) => {
+        res.render('uploadSuccess', {results: result})
+      })
+      .catch((err) => console.log(err));
+  },
+];
