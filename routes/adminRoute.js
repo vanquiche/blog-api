@@ -19,4 +19,7 @@ router.get('/profile', adminController.get_profile);
 router.put('/profile', adminController.update_profile);
 router.post('/profile', adminController.add_user);
 
+router.get('/media', adminController.get_media_library);
+router.post('/media', adminController.post_media_library);
+
 module.exports = router;
