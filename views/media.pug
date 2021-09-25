@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h5= title
+  a(href='/admin' class='link-primary me-3') back
+  hr
+  div.form-container
+    form(action='' method='POST' enctype='multipart/form-data')
+      //- media upload
+      div(class='form-floating mb-1')
+        input(type='file' id='floatingInput' class='form-control' style='padding-top:45px' name='media' autocomplete='off' accept='.jpg, .jpeg, .png, .gif' multiple)
+        label(for='floatingInput' class='blogLabel') Add Media
+
+      input(type='submit' class='btn btn-primary btn-sm me-1' value='Upload')
+      input(type='reset' class='btn btn-primary btn-sm me-1' value='Remove')
